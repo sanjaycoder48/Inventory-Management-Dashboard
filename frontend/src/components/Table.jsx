@@ -1,4 +1,11 @@
-// Reusable Table component
-export default function Table() {
-    return <table></table>;
+
+
+
+function Table() {
+    return (
+        <nav>
+            <h>table</h>
+        </nav>
+    )
 }
+export default Table;
