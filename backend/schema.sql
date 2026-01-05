@@ -1,0 +1,2 @@
+-- Database Schema initialization
+-- Create tables for Users, Products, Categories, StockMovements
