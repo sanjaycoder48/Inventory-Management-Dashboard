@@ -4,8 +4,6 @@ import Table from './components/Table';
 import Cards from './components/Card';
 
 
-// Main Application Component
-// Setup Routes here
 function App() {
     return (
         <div className="flex h-screen bg-gray-50">
