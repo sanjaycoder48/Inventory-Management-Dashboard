@@ -1,8 +1,10 @@
 import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { House, CirclePile, ArrowUpFromLine, LogOut, Settings, ChevronLeft, ChevronRight } from "lucide-react";
 
 function Sidebar() {
     const [isExpanded, setIsExpanded] = useState(true);
+    const location = useLocation();
 
     return (
         <aside className={`${isExpanded ? "w-64" : "w-20"} bg-white shadow-xl h-screen flex flex-col p-4 transition-all duration-300 ease-in-out relative border-r border-gray-100`}>
@@ -32,30 +34,73 @@ function Sidebar() {
 
             {/* Navigation */}
             <nav className="flex flex-col gap-2 flex-1">
-                <SidebarItem icon={<House size={20} />} text="Dashboard" isExpanded={isExpanded} active />
-                <SidebarItem icon={<CirclePile size={20} />} text="Inventory" isExpanded={isExpanded} />
-                <SidebarItem icon={<ArrowUpFromLine size={20} />} text="Update Items" isExpanded={isExpanded} />
-                <SidebarItem icon={<Settings size={20} />} text="Settings" isExpanded={isExpanded} />
+                <SidebarItem
+                    to="/"
+                    icon={<House size={20} />}
+                    text="Dashboard"
+                    isExpanded={isExpanded}
+                    active={location.pathname === '/'}
+                />
+                <SidebarItem
+                    to="/inventory"
+                    icon={<CirclePile size={20} />}
+                    text="Inventory"
+                    isExpanded={isExpanded}
+                    active={location.pathname === '/inventory'}
+                />
+                <SidebarItem
+                    to="/update-items"
+                    icon={<ArrowUpFromLine size={20} />}
+                    text="Update Items"
+                    isExpanded={isExpanded}
+                    active={location.pathname === '/update-items'}
+                />
+                <SidebarItem
+                    to="/settings"
+                    icon={<Settings size={20} />}
+                    text="Settings"
+                    isExpanded={isExpanded}
+                    active={location.pathname === '/settings'}
+                />
             </nav>
 
             <div className="mt-auto border-t pt-4">
-                <SidebarItem icon={<LogOut size={20} />} text="Log out" isExpanded={isExpanded} isDanger />
+                <button
+                    onClick={() => alert('Logout functionality')}
+                    className={`
+                        flex items-center px-3 py-3 rounded-lg transition-all w-full group relative
+                        ${isExpanded ? "gap-3 justify-start" : "justify-center"}
+                        text-red-500 hover:bg-red-50 hover:text-red-700
+                    `}
+                    title={!isExpanded ? "Log out" : ""}
+                >
+                    <div className="shrink-0"><LogOut size={20} /></div>
+                    <span className={`font-medium whitespace-nowrap transition-all duration-300 ${isExpanded ? "opacity-100 w-auto" : "opacity-0 w-0 overflow-hidden"}`}>
+                        Log out
+                    </span>
+
+                    {/* Tooltip for collapsed state */}
+                    {!isExpanded && (
+                        <div className="absolute left-full ml-4 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity z-50 whitespace-nowrap pointer-events-none">
+                            Log out
+                        </div>
+                    )}
+                </button>
             </div>
         </aside>
     )
 }
 
-function SidebarItem({ icon, text, active = false, isDanger = false, isExpanded }) {
+function SidebarItem({ to, icon, text, active = false, isExpanded }) {
     return (
-        <button
+        <Link
+            to={to}
             className={`
                 flex items-center px-3 py-3 rounded-lg transition-all w-full group relative
                 ${isExpanded ? "gap-3 justify-start" : "justify-center"}
                 ${active
                     ? "bg-indigo-50 text-indigo-600"
-                    : isDanger
-                        ? "text-red-500 hover:bg-red-50 hover:text-red-700"
-                        : "text-gray-600 hover:bg-indigo-50 hover:text-indigo-600"
+                    : "text-gray-600 hover:bg-indigo-50 hover:text-indigo-600"
                 }
             `}
             title={!isExpanded ? text : ""}
@@ -71,8 +116,9 @@ function SidebarItem({ icon, text, active = false, isDanger = false, isExpanded 
                     {text}
                 </div>
             )}
-        </button>
+        </Link>
     );
 }
 
 export default Sidebar;
+
